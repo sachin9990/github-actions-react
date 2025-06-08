@@ -1,7 +1,7 @@
 name: Deploy Dist
 on: [push, 'workflow_dispatch']
 jobs:
-  greetings:
+  test:
     runs-on: ubuntu-latest
     steps:
       - name: Clone the code on the machine
