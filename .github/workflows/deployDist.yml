@@ -19,8 +19,11 @@ jobs:
         uses: actions/setup-node@v4.4.0
         with:
           node-version: '20'
-      - name: print Node.js version
-        run: node --version
+      - name: cache Dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }} 
       - name: Install dependencies
       # This step installs the dependencies using npm ci (clean install)
         run: npm ci
@@ -42,6 +45,11 @@ jobs:
           node-version: '20'
       - name: print Node.js version
         run: node --version
+      - name: cache Dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }} 
       - name: Install dependencies
       # This step installs the dependencies using npm ci (clean install)
         run: npm ci
