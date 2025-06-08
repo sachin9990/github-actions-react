@@ -4,9 +4,26 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - name: Clone the code on the machine
-        run: |
-          echo "Cloning the code on the machine"
-          echo "${{toJson(github)}}"
-          # git clone https://github.com/sachin9990/github-actions-react.git
-          git clone https://github.com/${{github.repository}}.git
+      # Below is the code that clones the repository in a harder way
+      # - name: Clone the code on the machine
+        # run: |
+        #   echo "Cloning the code on the machine"
+        #   echo "${{toJson(github)}}"
+        #   git clone https://github.com/${{github.repository}}.git
+
+      # Now below is the code that clones the repository in a simpler way
+      - name: Checkout
+        uses: actions/checkout@v4.2.2
+      # # Below is the code that sets up Node.js environment
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v4.4.0
+        with:
+          node-version: '20'
+      - name: print Node.js version
+        run: node --version
+      - name: Install dependencies
+      # This step installs the dependencies using npm ci (clean install)
+        run: npm ci
+      - name: Run tests using vite
+      # This step runs the tests using npm run test
+        run: npm run test
