@@ -27,3 +27,28 @@ jobs:
       - name: Run tests using vite
       # This step runs the tests using npm run test
         run: npm run test
+
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      # Get the code from the repository
+      - name: Checkout
+        uses: actions/checkout@v4.2.2
+      # Setup Node.js environment
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v4.4.0
+        with:
+          node-version: '20'
+      - name: print Node.js version
+        run: node --version
+      - name: Install dependencies
+      # This step installs the dependencies using npm ci (clean install)
+        run: npm ci
+      - name: Build Project
+      # This step runs the build using npm run build
+        run: npm run build
+      - name: Deploy
+      # This step runs the build using npm run build
+        run: echo "Deploying the dist folder"
+
+    
