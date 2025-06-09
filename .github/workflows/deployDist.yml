@@ -1,15 +1,24 @@
 name: Deploy Dist
-on: [push, workflow_dispatch]
+# on: [push, workflow_dispatch]
+on:
+  push:
+    branches:
+      - main
+      - "feature/**"
+    paths-ignore:
+      - ".github/workflows/*"
+      - "README.md"
+  workflow_dispatch:
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
       # Below is the code that clones the repository in a harder way
       # - name: Clone the code on the machine
-        # run: |
-        #   echo "Cloning the code on the machine"
-        #   echo "${{toJson(github)}}"
-        #   git clone https://github.com/${{github.repository}}.git
+      # run: |
+      #   echo "Cloning the code on the machine"
+      #   echo "${{toJson(github)}}"
+      #   git clone https://github.com/${{github.repository}}.git
 
       # Now below is the code that clones the repository in a simpler way
       - name: Checkout
@@ -18,17 +27,17 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v4.4.0
         with:
-          node-version: '20'
+          node-version: "20"
       - name: cache Dependencies
         uses: actions/cache@v4
         with:
           path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }} 
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
       - name: Install dependencies
-      # This step installs the dependencies using npm ci (clean install)
+        # This step installs the dependencies using npm ci (clean install)
         run: npm ci
       - name: Run tests using vite
-      # This step runs the tests using npm run test
+        # This step runs the tests using npm run test
         run: npm run test
 
   deploy:
@@ -42,22 +51,20 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v4.4.0
         with:
-          node-version: '20'
+          node-version: "20"
       - name: print Node.js version
         run: node --version
       - name: cache Dependencies
         uses: actions/cache@v4
         with:
           path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }} 
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
       - name: Install dependencies
-      # This step installs the dependencies using npm ci (clean install)
+        # This step installs the dependencies using npm ci (clean install)
         run: npm ci
       - name: Build Project
-      # This step runs the build using npm run build
+        # This step runs the build using npm run build
         run: npm run build
       - name: Deploy
-      # This step runs the build using npm run build
+        # This step runs the build using npm run build
         run: echo "Deploying the dist folder"
-
-    
